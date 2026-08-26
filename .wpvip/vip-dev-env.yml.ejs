@@ -15,6 +15,13 @@ photon: false
 cron: false
 overrides: |
   services:
+    # nginx serves the plugin's static assets (e.g. a block editor's build/
+    # bundle) directly, so it needs the same bind-mount as php. Without it those
+    # assets 404 while PHP still runs, and any browser-served script never loads.
+    nginx:
+      services:
+        volumes:
+          - <%= configDir %>/..:/wp/wp-content/plugins/example-integration
     php:
       services:
         environment:
